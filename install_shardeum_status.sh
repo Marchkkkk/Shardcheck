@@ -1,8 +1,17 @@
 #!/bin/bash
 
-# Create a directory for the script
-INSTALL_DIR="/usr/local/shardeum_status"
+# Define installation directory
+INSTALL_DIR="/root/shard_tg_checker"
 mkdir -p $INSTALL_DIR
+
+# Download the necessary scripts from GitHub
+echo "Downloading the necessary scripts from GitHub..."
+wget -O $INSTALL_DIR/check_shardeum_status.sh https://raw.githubusercontent.com/Marchkkkk/shard_tg_checker/main/check_shardeum_status.sh
+wget -O $INSTALL_DIR/uninstall.sh https://raw.githubusercontent.com/Marchkkkk/shard_tg_checker/main/uninstall.sh
+
+# Make sure the scripts have execution rights
+chmod +x $INSTALL_DIR/check_shardeum_status.sh
+chmod +x $INSTALL_DIR/uninstall.sh
 
 # Ask the user for necessary information
 read -p "Enter server name: " SERVER_NAME
@@ -26,7 +35,7 @@ case $INTERVAL_CHOICE in
     *) echo "Invalid choice. Installation canceled." ; exit 1 ;;
 esac
 
-# Create the main script for checking the status
+# Create the check_shardeum_status.sh script
 cat <<EOL > $INSTALL_DIR/check_shardeum_status.sh
 #!/bin/bash
 
@@ -34,8 +43,9 @@ cat <<EOL > $INSTALL_DIR/check_shardeum_status.sh
 check_node_status() {
     cd ~/.shardeum && ./shell.sh && operator-cli status > /tmp/shardeum_status_\$SERVER_NAME.txt
 
-    status=\$(grep "status: " /tmp/shardeum_status_\$SERVER_NAME.txt | awk '{print \$2}')
-    
+    # Read the content of the status file
+    status=\$(cat /tmp/shardeum_status_\$SERVER_NAME.txt)
+
     # Check if the status was not found
     if [ -z "\$status" ]; then
         status="ERROR"
@@ -46,7 +56,7 @@ check_node_status() {
 check_node_status
 
 # Format the message for Telegram
-message="Server #: $SERVER_NAME\nIP: \$(hostname -I | awk '{print \$1}')\nStatus: \$status"
+message="Server #: $SERVER_NAME\nIP: \$(hostname -I | awk '{print \$1}')\nStatus:\n\$status"
 
 # Send the message to Telegram
 curl -s -X POST "https://api.telegram.org/bot$BOT_TOKEN/sendMessage" -d chat_id="$CHAT_ID" -d text="\$message"
