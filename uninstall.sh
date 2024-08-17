@@ -6,4 +6,4 @@ crontab -l | grep -v "/usr/local/shardeum_status/check_shardeum_status.sh" | cro
 # Remove the script directory
 rm -rf /usr/local/shardeum_status
 
-echo "Script and all its components have been removed."
+echo "Script and all its components have been removed." 
