@@ -23,15 +23,21 @@ mkdir -p "$INSTALL_DIR"
 $DOWNLOAD_CMD https://github.com/Marchkkkk/shardeum_tg_checker/raw/main/$SCRIPT_NAME -o "$INSTALL_DIR/$SCRIPT_NAME"
 chmod +x "$INSTALL_DIR/$SCRIPT_NAME"
 
-# Завантаження файлу конфігурації, якщо його ще немає
-if [ ! -f "$CONFIG_FILE" ]; then
-    echo "Файл конфігурації відсутній. Створіть його за шаблоном:"
-    echo "BOT_TOKEN=\"your_bot_token\""
-    echo "CHAT_ID=\"your_chat_id\""
-    echo "SERVER_NAME=\"your_server_name\""
-    echo "Створіть файл $CONFIG_FILE та заповніть його вказаними даними."
-    exit 1
-fi
+# Запит параметрів конфігурації
+echo "Введіть дані для налаштування скрипту:"
+read -p "BOT_TOKEN: " BOT_TOKEN
+read -p "CHAT_ID: " CHAT_ID
+read -p "SERVER_NAME: " SERVER_NAME
+
+# Створення файлу конфігурації
+cat <<EOL > "$CONFIG_FILE"
+# Конфігурація для Telegram
+BOT_TOKEN="$BOT_TOKEN"
+CHAT_ID="$CHAT_ID"
+SERVER_NAME="$SERVER_NAME"
+EOL
+
+echo "Файл конфігурації створено за адресою $CONFIG_FILE."
 
 # Запит частоти виконання
 echo "Виберіть частоту виконання (введіть цифру):"
