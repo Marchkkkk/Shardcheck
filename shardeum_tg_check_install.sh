@@ -19,12 +19,32 @@ setup_environment() {
 
 # Функція для налаштування cron
 setup_cron() {
-    CRON_JOB="0 * * * * $SCRIPT_DIR/check_shardeum_status.sh"
+    echo "Виберіть частоту перевірки статусу ноди:"
+    echo "1) Кожні 3 хвилини"
+    echo "2) Кожну годину"
+    echo "3) Кожні 3 години"
+    read -p "Введіть номер вибраної опції (1/2/3): " CRON_OPTION
+
+    case $CRON_OPTION in
+        1)
+            CRON_JOB="*/3 * * * * $SCRIPT_DIR/check_shardeum_status.sh"
+            ;;
+        2)
+            CRON_JOB="0 * * * * $SCRIPT_DIR/check_shardeum_status.sh"
+            ;;
+        3)
+            CRON_JOB="0 */3 * * * $SCRIPT_DIR/check_shardeum_status.sh"
+            ;;
+        *)
+            echo "Невірний вибір. За замовчуванням буде вибрано кожну годину."
+            CRON_JOB="0 * * * * $SCRIPT_DIR/check_shardeum_status.sh"
+            ;;
+    esac
     
-    # Перевірка наявності cron
+    # Додавання завдання до cron
     (crontab -l 2>/dev/null | grep -v -F "$SCRIPT_DIR/check_shardeum_status.sh"; echo "$CRON_JOB") | crontab -
     
-    echo "Cron налаштовано для щогодинного виконання скрипта."
+    echo "Cron налаштовано для виконання скрипта з вибраним інтервалом."
 }
 
 # Функція для запиту даних у користувача
