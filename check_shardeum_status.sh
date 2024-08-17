@@ -5,27 +5,22 @@ source "$HOME/shardeum_tg_checker/config.sh"
 
 # Функція для перевірки статусу ноди
 check_node_status() {
-    # Перехід до директорії і виконання shell.sh
-    if ! cd ~/.shardeum; then
-        echo "Не вдалося перейти до директорії ~/.shardeum" >> "$HOME/shardeum_tg_checker/status_output.txt"
-        return 1
-    fi
+    # Перехід до директорії і запуск shell.sh всередині tmux
+    tmux new-session -d -s shardeum_session "cd ~/.shardeum && ./shell.sh"
 
-    if ! ./shell.sh 2>>"$HOME/shardeum_tg_checker/status_output.txt"; then
-        echo "Не вдалося виконати shell.sh" >> "$HOME/shardeum_tg_checker/status_output.txt"
-        return 1
-    fi
-
-    # Додати невелику затримку для впевненості, що середовище готове
-    sleep 5
+    # Дочекайтеся, поки команду буде виконано
+    sleep 10
 
     # Отримання статусу ноди та запис всього вихідного результату у файл для відлагодження
-    full_output=$(operator-cli status 2>&1)
+    full_output=$(tmux capture-pane -t shardeum_session -pS -1000)
     echo "$full_output" > "$HOME/shardeum_tg_checker/status_output.txt"
 
     # Виведення відлагоджувальної інформації в консоль
     echo "Отриманий вихідний результат:"
     echo "$full_output" >> "$HOME/shardeum_tg_checker/status_output.txt"
+
+    # Закриття сесії tmux
+    tmux kill-session -t shardeum_session
 
     # Спроба знайти статус в отриманому результаті
     status=$(echo "$full_output" | grep "state:" | awk '{print $2}')
