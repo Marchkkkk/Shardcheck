@@ -6,8 +6,8 @@ mkdir -p $INSTALL_DIR
 
 # Download the necessary scripts from GitHub
 echo "Downloading the necessary scripts from GitHub..."
-wget -O $INSTALL_DIR/check_shardeum_status.sh https://raw.githubusercontent.com/Marchkkkk/shard_tg_checker/main/check_shardeum_status.sh
-wget -O $INSTALL_DIR/uninstall.sh https://raw.githubusercontent.com/Marchkkkk/shard_tg_checker/main/uninstall.sh
+wget -O $INSTALL_DIR/check_shardeum_status.sh https://raw.githubusercontent.com/Marchkkkk/shardeum_tg_checker/main/check_shardeum_status.sh
+wget -O $INSTALL_DIR/uninstall.sh https://raw.githubusercontent.com/Marchkkkk/shardeum_tg_checker/main/uninstall.sh
 
 # Make sure the scripts have execution rights
 chmod +x $INSTALL_DIR/check_shardeum_status.sh
