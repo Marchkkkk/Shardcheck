@@ -23,7 +23,7 @@ check_node_status() {
 # Перевірка статусу ноди
 if ! check_node_status; then
     # Формування повідомлення про помилку для Telegram
-    message="Сервер №: $SERVER_NAME\nIP: $(hostname -I | awk '{print $1}')\nСтатус: Error"
+    message="Сервер №: $SERVER_NAME%0AIP: $(hostname -I | awk '{print $1}')%0AСтатус: Error"
 
     # Надсилання повідомлення в Telegram
     curl -s -X POST "https://api.telegram.org/bot$BOT_TOKEN/sendMessage" -d chat_id="$CHAT_ID" -d text="$message"
@@ -33,7 +33,7 @@ if ! check_node_status; then
 fi
 
 # Формування повідомлення для Telegram
-message="Сервер №: $SERVER_NAME\nIP: $(hostname -I | awk '{print $1}')\nСтатус: $status"
+message="Сервер №: $SERVER_NAME%0AIP: $(hostname -I | awk '{print $1}')%0AСтатус: $status"
 
 # Надсилання повідомлення в Telegram
 curl -s -X POST "https://api.telegram.org/bot$BOT_TOKEN/sendMessage" -d chat_id="$CHAT_ID" -d text="$message"
