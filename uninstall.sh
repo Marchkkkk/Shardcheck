@@ -1,12 +1,9 @@
 #!/bin/bash
 
-# Define installation directory
-INSTALL_DIR="/root/shard_tg_checker"
-
 # Remove the cron job
-crontab -l | grep -v "$INSTALL_DIR/check_shardeum_status.sh" | crontab -
+crontab -l | grep -v "/usr/local/shardeum_status/check_shardeum_status.sh" | crontab -
 
 # Remove the script directory
-rm -rf $INSTALL_DIR
+rm -rf /usr/local/shardeum_status
 
 echo "Script and all its components have been removed."
