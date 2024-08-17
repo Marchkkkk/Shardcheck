@@ -9,7 +9,7 @@ setup_environment() {
     # Перехід у створену директорію
     cd $SCRIPT_DIR
 
-    # Завантаження скрипта з GitHub
+    # Завантаження основного скрипта з GitHub
     echo "Завантаження основного скрипта з GitHub..."
     curl -s -o check_shardeum_status.sh https://raw.githubusercontent.com/Marchkkkk/shardeum_tg_checker/main/check_shardeum_status.sh
 
