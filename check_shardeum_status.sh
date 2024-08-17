@@ -3,11 +3,13 @@
 # Завантаження конфігурації
 source "$HOME/shardeum_tg_checker/config.sh"
 
-# Основна логіка скрипта
+# Функція для перевірки статусу ноди
 check_node_status() {
-    cd ~/.shardeum && ./shell.sh && operator-cli status > /tmp/shardeum_status_$SERVER_NAME.txt
-
-    status=$(grep "status: " /tmp/shardeum_status_$SERVER_NAME.txt | awk '{print $2}')
+    # Перехід до директорії і виконання shell.sh
+    cd ~/.shardeum && ./shell.sh
+    
+    # Отримання статусу ноди
+    status=$(operator-cli status | grep "status: " | awk '{print $2}')
 }
 
 # Перевірка статусу ноди
