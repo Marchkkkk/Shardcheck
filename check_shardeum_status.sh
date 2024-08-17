@@ -6,11 +6,10 @@ source "$HOME/shardeum_tg_checker/config.sh"
 # Функція для перевірки статусу ноди
 check_node_status() {
     # Перехід до директорії і виконання shell.sh
-    if ! cd ~/.shardeum 2>>"$HOME/shardeum_tg_checker/status_output.txt"; then
+    if ! cd ~/.shardeum; then
         echo "Не вдалося перейти до директорії ~/.shardeum" >> "$HOME/shardeum_tg_checker/status_output.txt"
         return 1
     fi
-    sleep 5
 
     if ! ./shell.sh 2>>"$HOME/shardeum_tg_checker/status_output.txt"; then
         echo "Не вдалося виконати shell.sh" >> "$HOME/shardeum_tg_checker/status_output.txt"
