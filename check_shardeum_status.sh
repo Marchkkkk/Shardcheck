@@ -11,8 +11,12 @@ check_node_status() {
         return 1
     fi
     
+    # Додати невелику затримку для впевненості, що середовище готове
+    sleep 5
+
     # Отримання статусу ноди
-    if ! status=$(operator-cli status 2>&1 | grep "status: " | awk '{print $2}'); then
+    status=$(operator-cli status 2>&1 | grep "state:" | awk '{print $2}')
+    if [ -z "$status" ]; then
         echo "Не вдалося отримати статус ноди"
         return 1
     fi
